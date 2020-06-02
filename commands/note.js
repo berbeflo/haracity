@@ -9,7 +9,7 @@ exports.run = (client, message, args) => {
         {
             type : 'enum',
             misc: {
-                'values' : ['add', 'remove', 'list']
+                values : ['add', 'remove', 'list']
             },
             required : true,
             name : 'subcommand'

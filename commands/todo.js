@@ -11,7 +11,7 @@ exports.run = (client, message, args) => {
             required : true,
             name : 'subcommand',
             misc: {
-                'values' : ['add', 'check', 'create', 'delete', 'show']
+                values : ['add', 'check', 'create', 'delete', 'show']
             }
         },
         {

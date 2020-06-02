@@ -2,6 +2,7 @@ module.exports = (message, config, args, options) => {
     mapping = {
         number : validateNumber,
         userid : validateUserId,
+        channelid : validateChannelId,
         text : validateText,
         enum : validateEnum
     };
@@ -87,7 +88,7 @@ validateText = (value, message, config) => {
 }
 
 validateUserId = (value, message, config) => {
-    var match = value.match(/^(<@!)?(\d{17,18})(>)?/);
+    var match = value.match(/^(<@!)?(\d{17,18})(>)?$/);
     if (match === null) {
         return [false, null];
     }
@@ -104,6 +105,17 @@ validateUserId = (value, message, config) => {
     }
     
     return [true, userId];
+}
+
+validateChannelId = (value, message, config) => {
+    var match = value.match(/^(<#)?(\d{17,18})(>)?$/);
+    if (match === null) {
+        return [false, null];
+    }
+
+    var channelId = match[2];
+
+    return [true, channelId];
 }
 
 validateEnum = (value, message, config) => {

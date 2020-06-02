@@ -119,8 +119,6 @@ addTodoEntry = (client, message, args) => {
             return message.channel.send('only the creator can do this!');
         }
 
-        console.log(result);
-
         var sql = 'insert into todoentry set ?';
         var data = {
             listid : args.listid[0],

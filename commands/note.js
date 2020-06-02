@@ -51,8 +51,6 @@ exports.run = (client, message, args) => {
         ]
     });
 
-    console.log(args);
-
     if (!args.isValid) {
         return message.channel.send('just nope!');
     }

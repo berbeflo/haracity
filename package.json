@@ -1,0 +1,22 @@
+{
+  "name": "haracity",
+  "version": "1.0.0",
+  "description": "bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot"
+  ],
+  "author": "berbeflo",
+  "license": "ISC",
+  "devDependencies": {
+    "discord.js": "^12.2.0"
+  },
+  "dependencies": {
+    "enmap": "^5.2.4",
+    "mysql": "^2.18.1",
+    "node-gyp": "^5.1.1"
+  }
+}

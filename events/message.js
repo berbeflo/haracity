@@ -1,4 +1,4 @@
-module.exports = (client, message) => {
+module.exports.run = (client, message) => {
     if (message.author.bot) {
         return;
     }
@@ -9,10 +9,9 @@ module.exports = (client, message) => {
 
     const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
-
-    const cmd = client.commands.get(command);
+    const cmd = client.commands[command];
     
-    if (!cmd) {
+    if (typeof cmd === 'undefined') {
         return;
     }
 
@@ -28,8 +27,10 @@ module.exports = (client, message) => {
 
     });
 
-    cmd.run(client, message, args);
+    cmd(client, message, args);
 };
+
+module.exports.type = 'event';
 
 gainXP = (client, message) => {
     var selectSql = 'select * from experience where guild = ? and channel = ?';

@@ -26,3 +26,5 @@ exports.run = (client, message, args) => {
 
     message.channel.send(`Successfully gave ${message.guild.member(args.receiver[0]).user.username} ${args.amount[0]} Cookies`);
 };
+
+exports.type = 'command';

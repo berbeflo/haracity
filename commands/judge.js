@@ -29,3 +29,5 @@ exports.run = (client, message, args) => {
 };
 
 exports.aliases = ['judge', 'rebecca'];
+
+exports.type = 'command';

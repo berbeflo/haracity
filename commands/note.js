@@ -1,3 +1,5 @@
+exports.type = 'command';
+
 exports.run = (client, message, args) => {
     var run = {
         add : addNote,

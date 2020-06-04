@@ -1,4 +1,6 @@
-module.exports = (message, config, args, options) => {
+module.exports.type = 'extension';
+
+module.exports.ext = (message, config, args, options) => {
     mapping = {
         number : validateNumber,
         userid : validateUserId,

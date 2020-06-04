@@ -1,3 +1,5 @@
+exports.type = 'command';
+
 exports.run = (client, message, args) => {
     message.channel.send('pong!');
     client.ext.filterArgs(message, [

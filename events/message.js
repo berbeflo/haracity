@@ -2,7 +2,9 @@ module.exports.run = (client, message) => {
     if (message.author.bot) {
         return;
     }
-    gainXP(client, message);
+    
+    client.ext.xp(client, message);
+
     if (message.content.indexOf(client.config.prefix) !== 0) {
         return;
     }
@@ -31,24 +33,3 @@ module.exports.run = (client, message) => {
 };
 
 module.exports.type = 'event';
-
-gainXP = (client, message) => {
-    var selectSql = 'select * from experience where guild = ? and channel = ?';
-    var selectData = [message.guild.id, message.channel.id];
-
-    client.ext.db.query(selectSql, selectData, (error, result) => {
-        if (result.length > 0) {
-            var insertSql = 'insert into experiencecounter set ?';
-            var insertData = {
-                guild : message.guild.id,
-                channel : message.channel.id,
-                user : message.author.id,
-                xp : result[0].xp
-            };
-
-            client.ext.db.query(insertSql, insertData, (error, result) => {
-
-            });
-        }
-    });
-}

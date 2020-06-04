@@ -12,9 +12,19 @@ con.connect(err => {
     console.log("Connected!");
 });
 
-client.db = con;
-
 client.config = config;
+
+client.ext = {};
+client.ext.db = con;
+
+fs.readdir('./helpers/', (err, files) => {
+    if (err) return console.error(err);
+    files.forEach(file => {
+        let props = require(`./helpers/${file}`);
+        let helperName = file.split('.')[0];
+        client.ext[helperName] = props;
+    });
+});
 
 fs.readdir('./events/', (err, files) => {
     if (err) return console.error(err);
@@ -38,17 +48,6 @@ fs.readdir('./commands/', (err, files) => {
             client.commands.set(name, props);
         });
         
-    });
-});
-
-client.helpers = {};
-
-fs.readdir('./helpers/', (err, files) => {
-    if (err) return console.error(err);
-    files.forEach(file => {
-        let props = require(`./helpers/${file}`);
-        let helperName = file.split('.')[0];
-        client.helpers[helperName] = props;
     });
 });
 

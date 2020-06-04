@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
     message.channel.send('pong!');
-    client.helpers.filterArgs(message, [
+    client.ext.filterArgs(message, [
         {
             type : 'userid',
             required : true,

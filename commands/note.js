@@ -5,7 +5,7 @@ exports.run = (client, message, args) => {
         remove : removeNote
     };
 
-    var args = client.helpers.filterArgs(message, [
+    var args = client.ext.filterArgs(message, [
         {
             type : 'enum',
             misc: {
@@ -66,7 +66,7 @@ addNote = (client, message, args) => {
         user : args.pinged[0],
         message : args.note.join(' ')
     };
-    client.db.query(sql, data, (error, result) => {
+    client.ext.db.query(sql, data, (error, result) => {
         message.channel.send('added note');
     });
 };
@@ -78,7 +78,7 @@ listNotes = (client, message, args) => {
     ];
     var sql = 'select * from note where guild = ? and user = ? order by id asc';
     
-    client.db.query(sql, data, (error, result) => {
+    client.ext.db.query(sql, data, (error, result) => {
         if (result.length === 0) {
             message.channel.send('no notes found for this user');
         }
@@ -96,7 +96,7 @@ removeNote = (client, message, args) => {
     ];
     var sql = 'delete from note where guild = ? and user = ? and id = ?';
 
-    client.db.query(sql, data, (error, result) => {
+    client.ext.db.query(sql, data, (error, result) => {
         if (result.affectedRows > 0) {
             return message.channel.send(`removed the note with id ${args.id[0]}`);
         }

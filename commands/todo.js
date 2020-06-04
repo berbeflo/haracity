@@ -3,15 +3,16 @@ exports.run = (client, message, args) => {
         create : createTodoList,
         add : addTodoEntry,
         show : showTodoList,
-        check : checkTodoEntry
+        check : checkTodoEntry,
+        list : showAllTodos
     };
-    var args = client.helpers.filterArgs(message, [
+    var args = client.ext.filterArgs(message, [
         {
             type : 'enum',
             required : true,
             name : 'subcommand',
             misc: {
-                values : ['add', 'check', 'create', 'delete', 'show']
+                values : ['add', 'check', 'create', 'delete', 'show', 'list']
             }
         },
         {
@@ -78,6 +79,13 @@ exports.run = (client, message, args) => {
                             argsList.responsible.length === 0 &&
                             argsList.text.length === 0
                         );
+                    case 'list':
+                        return (
+                            argsList.listid.length === 0 &&
+                            argsList.entryid.length === 0 &&
+                            argsList.responsible.length === 0 &&
+                            argsList.text.length === 0
+                        );
                 }
             }
         ]
@@ -98,7 +106,7 @@ createTodoList = (client, message, args) => {
         text : args.text.join(" ")
     };
 
-    client.db.query(sql, data, (error, result) => {
+    client.ext.db.query(sql, data, (error, result) => {
         message.channel.send(`created todo list with id ${result.insertId}`);
     });
 }
@@ -110,7 +118,7 @@ addTodoEntry = (client, message, args) => {
         args.listid[0]
     ];
 
-    client.db.query(selectSql, selectData, (error, result) => {
+    client.ext.db.query(selectSql, selectData, (error, result) => {
         if (result.length === 0) {
             return message.channel.send('no list found for this id');
         }
@@ -127,7 +135,7 @@ addTodoEntry = (client, message, args) => {
             text : args.text.join(" ")
         };
 
-        client.db.query(sql, data, (error, result) => {
+        client.ext.db.query(sql, data, (error, result) => {
             message.channel.send(`created todo list entry with id ${result.insertId} for list ${args.listid[0]}`);
         });
     });
@@ -140,7 +148,7 @@ showTodoList = (client, message, args) => {
         args.listid[0]
     ];
 
-    client.db.query(selectSql, selectData, (error, result) => {
+    client.ext.db.query(selectSql, selectData, (error, result) => {
         if (result.length === 0) {
             return message.channel.send('no list found for this id');
         }
@@ -150,7 +158,7 @@ showTodoList = (client, message, args) => {
             args.listid[0]
         ];
 
-        client.db.query(selectSql, selectData, (error, result) => {
+        client.ext.db.query(selectSql, selectData, (error, result) => {
             message.channel.send(`showing data for list ${args.listid[0]}`)
             if (result.length === 0) {
                 return message.channel.send('no entries found for this list');
@@ -174,7 +182,7 @@ checkTodoEntry = (client, message, args) => {
         args.listid[0]
     ];
 
-    client.db.query(selectSql, selectData, (error, result) => {
+    client.ext.db.query(selectSql, selectData, (error, result) => {
         if (result.length === 0) {
             return message.channel.send('no list found for this id');
         }
@@ -185,7 +193,7 @@ checkTodoEntry = (client, message, args) => {
             args.entryid[0]
         ];
 
-        client.db.query(selectSql, selectData, (error, result) => {
+        client.ext.db.query(selectSql, selectData, (error, result) => {
             if (result.length === 0) {
                 return message.channel.send('no entry with given id found');
             }
@@ -200,9 +208,23 @@ checkTodoEntry = (client, message, args) => {
                 args.entryid[0]
             ];
 
-            client.db.query(updateSql, updateData, (error, result) => {
+            client.ext.db.query(updateSql, updateData, (error, result) => {
                 message.channel.send('updated the entry');
             });
+        });
+    });
+}
+
+showAllTodos = (client, message, args) => {
+    var selectSql = 'select * from todolist where guild = ?';
+    var selectData = [
+        message.guild.id
+    ];
+
+    client.ext.db.query(selectSql, selectData, (error, result) => {
+        message.channel.send('listing all todo lists of this server');
+        result.forEach(entry => {
+            message.channel.send(`${entry.id} | <@${entry.creator}> | ${entry.text}`);
         });
     });
 }

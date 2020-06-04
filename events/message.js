@@ -24,10 +24,8 @@ module.exports = (client, message) => {
         user : message.author.id
     };
 
-    client.db.query(sql, data, (error, result) => {
-        if (error) {
-            console.log(error);
-        }
+    client.ext.db.query(sql, data, (error, result) => {
+
     });
 
     cmd.run(client, message, args);
@@ -36,11 +34,8 @@ module.exports = (client, message) => {
 gainXP = (client, message) => {
     var selectSql = 'select * from experience where guild = ? and channel = ?';
     var selectData = [message.guild.id, message.channel.id];
-    console.log(selectData);
 
-    client.db.query(selectSql, selectData, (error, result) => {
-        console.log(error);
-        console.log(result);
+    client.ext.db.query(selectSql, selectData, (error, result) => {
         if (result.length > 0) {
             var insertSql = 'insert into experiencecounter set ?';
             var insertData = {
@@ -50,9 +45,8 @@ gainXP = (client, message) => {
                 xp : result[0].xp
             };
 
-            client.db.query(insertSql, insertData, (error, result) => {
-                console.log(error);
-                console.log(result);
+            client.ext.db.query(insertSql, insertData, (error, result) => {
+
             });
         }
     });

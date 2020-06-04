@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-    args = client.helpers.filterArgs(message, [
+    args = client.ext.filterArgs(message, [
         {
             type : 'userid',
             required : false,

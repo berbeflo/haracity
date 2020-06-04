@@ -5,7 +5,7 @@ exports.run = (client, message, args) => {
         list : showExperienceList
     };
 
-    var args = client.helpers.filterArgs(message, [
+    var args = client.ext.filterArgs(message, [
         {
             type : 'enum',
             misc: {
@@ -53,7 +53,7 @@ removeExperience = (client, message, args) => {
     var deleteSql = 'delete from experience where guild = ? and channel = ?';
     var selectData = [message.guild.id, args.channel[0]];
 
-    client.db.query(deleteSql, selectData, (error, result) => {
+    client.ext.db.query(deleteSql, selectData, (error, result) => {
 
     });
 }
@@ -62,7 +62,7 @@ setExperience = (client, message, args) => {
     var selectSql = 'select * from experience where guild = ? and channel = ?';
     var selectData = [message.guild.id, args.channel[0]];
 
-    client.db.query(selectSql, selectData, (error, result) => {
+    client.ext.db.query(selectSql, selectData, (error, result) => {
         if (result.length === 0) {
             return addExperience(client, message, args);
         }
@@ -78,7 +78,7 @@ addExperience = (client, message, args) => {
         xp : args.xp[0]
     };
 
-    client.db.query(insertSql, insertData, (error, result) => {
+    client.ext.db.query(insertSql, insertData, (error, result) => {
 
     });
 }
@@ -87,7 +87,7 @@ updateExperience = (client, message, args) => {
     var updateSql = 'update experience set xp = ? where guild = ? and channel = ?';
     var updateData = [args.xp[0], message.guild.id, args.channel[0]];
 
-    client.db.query(updateSql, updateData, (error, result) => {
+    client.ext.db.query(updateSql, updateData, (error, result) => {
         
     });
 }
@@ -96,7 +96,7 @@ showExperienceList = (client, message, args) => {
     var selectSql = 'select * from experience where guild = ?';
     var selectData = [message.guild.id];
 
-    client.db.query(selectSql, selectData, (error, result) => {
+    client.ext.db.query(selectSql, selectData, (error, result) => {
         message.channel.send('Channel experience list:');
         result.forEach(entry => {
             message.channel.send(`${entry.id} | <#${entry.channel}> | ${entry.xp}`)
